@@ -8,12 +8,11 @@
 
 private class Solution {
     private let nums = [Int]()
-    private func recursive(_ l:Int,_ r:Int,_ max:Int) -> Int {
-        return 0
-    }
     func maxSubArray(_ nums: [Int]) -> Int {
         0
     }
+    
+    
 }
 
 import XCTest
