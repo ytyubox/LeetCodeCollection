@@ -7,11 +7,29 @@
 
 
 private class Solution {
+    init(n:Int) {
+        self.n = n
+    }
     private let nums = [Int]()
-    func maxSubArray(_ nums: [Int]) -> Int {
+    private lazy var  doer:[([Int])->Int] = [
+        maxSubArray0,
+        
+    ]
+    var n:Int
+    var maxSubArray:([Int])->Int {
+        doer[n]
+    }
+    func maxSubArray0(_ nums: [Int]) -> Int {
+        var (result,curSum) = (Int.min,0)
+        for num in nums {
+            curSum = max(curSum + num, num)
+            result = max(result, curSum)
+        }
+        return result
+    }
+    func maxSubArray_DevideAndConquer(_ nums: [Int]) -> Int {
         0
     }
-    
     
 }
 
@@ -29,9 +47,12 @@ import XCTest
  If you have figured out the O(n) solution, try coding another solution using the divide and conquer approach, which is more subtle.
  */
 class _53MaximunSubarrayTests:XCTestCase {
+    private let solution = Solution(
+        n:0
+    )
     func testing() {
         let input = [-2,1,-3,4,-1,2,1,-5,4]
         let expect = 6
-        XCTAssertEqual(Solution().maxSubArray(input),expect)
+        XCTAssertEqual(solution.maxSubArray(input),expect)
     }
 }
