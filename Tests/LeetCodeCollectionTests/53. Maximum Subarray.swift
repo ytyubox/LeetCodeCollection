@@ -7,28 +7,47 @@
 
 
 private class Solution {
-    init(n:Int) {
-        self.n = n
+    init(approchNumber:Int) {
+        self.approchNumber = approchNumber
     }
     private let nums = [Int]()
     private lazy var  doer:[([Int])->Int] = [
-        maxSubArray0,
+        maxSubArray_greedy,
         
     ]
-    var n:Int
-    var maxSubArray:([Int])->Int {
-        doer[n]
+    var approchNumber:Int
+    var maxSubArray: ([Int])->Int {
+        let n = approchNumber < doer.count ? approchNumber : 0
+        return doer[n]
     }
-    func maxSubArray0(_ nums: [Int]) -> Int {
-        var (result,curSum) = (Int.min,0)
-        for num in nums {
+    /**
+     [-2, 1,-3, 4,-1, 2, 1,-5, 4]
+     [-2, 1,-2, 4, 3, 5, 6, 1, 5]
+     [-2, 1, 1, 4, 4, 6, 6, 6, 6]
+     */
+    
+    func maxSubArray_greedy(_ nums: [Int]) -> Int {
+        var result = nums.first!
+        var curSum = result
+        for num in nums[1...] {
             curSum = max(curSum + num, num)
             result = max(result, curSum)
         }
         return result
     }
     func maxSubArray_DevideAndConquer(_ nums: [Int]) -> Int {
-        0
+        let middlePoint = nums.count/2
+        let left = nums[0...middlePoint]
+        let right = nums[(middlePoint-1)..<nums.count]
+        
+        func crossSum(_ nums:[Int],
+                      _ left: Int,
+                      _ right: Int,
+                      _ p:Int
+        ) -> Int {
+            0
+        }
+        return 0
     }
     
 }
@@ -48,7 +67,7 @@ import XCTest
  */
 class _53MaximunSubarrayTests:XCTestCase {
     private let solution = Solution(
-        n:0
+        approchNumber: 0
     )
     func testing() {
         let input = [-2,1,-3,4,-1,2,1,-5,4]
