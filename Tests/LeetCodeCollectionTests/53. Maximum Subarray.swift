@@ -13,11 +13,11 @@ private class Solution {
     private let nums = [Int]()
     private lazy var  doer:[([Int])->Int] = [
         maxSubArray_greedy,
-        
+        maxSubArray_DevideAndConquer,
     ]
     var approchNumber:Int
     var maxSubArray: ([Int])->Int {
-        let n = approchNumber < doer.count ? approchNumber : 0
+        let n = approchNumber// < doer.count ? approchNumber : 0
         return doer[n]
     }
     /**
@@ -30,26 +30,59 @@ private class Solution {
         var result = nums.first!
         var curSum = result
         for num in nums[1...] {
-            curSum = max(curSum + num, num)
-            result = max(result, curSum)
+            curSum = Swift.max(curSum + num, num)
+            result = Swift.max(result, curSum)
         }
         return result
     }
     func maxSubArray_DevideAndConquer(_ nums: [Int]) -> Int {
-        let middlePoint = nums.count/2
-        let left = nums[0...middlePoint]
-        let right = nums[(middlePoint-1)..<nums.count]
-        
-        func crossSum(_ nums:[Int],
-                      _ left: Int,
-                      _ right: Int,
-                      _ p:Int
+        // middle part
+        func crossSum(
+            _ startIndex: Int,
+            _ endIndex: Int
         ) -> Int {
-            0
+            let p = (startIndex + endIndex) / 2
+            var leftSubSum = Int.min
+            var currSum = 0
+            for i in (startIndex...p).reversed() {
+                currSum += nums[i]
+                leftSubSum = Swift.max(leftSubSum, currSum)
+            }
+            var rightSubSum = Int.min
+            var rcurrSum = 0
+            for i in (p+1)...endIndex {
+                rcurrSum += nums[i]
+                rightSubSum = Swift.max(rightSubSum, rcurrSum)
+            }
+            print(nums[startIndex...endIndex],"\n",
+                  startIndex,
+                  p,
+                  endIndex,"\n",
+                  "l:", leftSubSum.s,
+                  "r:", rightSubSum.s,
+                  "o:", leftSubSum + rightSubSum,
+                  "\n")
+            return leftSubSum + rightSubSum
         }
-        return 0
+        
+        func recusiveHelper(
+            _ startIndex:Int,
+            _ endIndex:Int
+        ) -> Int {
+            if startIndex == endIndex {
+                return nums[startIndex]
+            }
+            let middlePoint = (startIndex+endIndex)/2
+            let leftSum = recusiveHelper(startIndex, middlePoint)
+            let rightSum = recusiveHelper(middlePoint+1, endIndex)
+            let _crossSum = crossSum(startIndex, endIndex)
+            return max(leftSum, rightSum, _crossSum)
+        }
+        return recusiveHelper(0, nums.count - 1)
     }
-    
+    private func max(_ a:Int,_ b:Int, _ c: Int) -> Int {
+        Swift.max(Swift.max(a,b), c)
+    }
 }
 
 import XCTest
@@ -67,11 +100,21 @@ import XCTest
  */
 class _53MaximunSubarrayTests:XCTestCase {
     private let solution = Solution(
-        approchNumber: 0
+        approchNumber: 1
     )
-    func testing() {
-        let input = [-2,1,-3,4,-1,2,1,-5,4]
+    func testing9Elements() {
+        let input = [-2,1,-3,4,-1,2,1,-5,4] // count = 9
         let expect = 6
         XCTAssertEqual(solution.maxSubArray(input),expect)
+    }
+    func testing3elements() {
+        let input = [-2,1,-3] // count = 3
+        let expect = 1
+        XCTAssertEqual(solution.maxSubArray(input),expect)
+    }
+}
+extension Int {
+    var s:String {
+        String(format: "%02d", self)
     }
 }
