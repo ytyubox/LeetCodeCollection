@@ -10,12 +10,11 @@ private class Solution {
     init(approchNumber:Int) {
         self.approchNumber = approchNumber
     }
-    private let nums = [Int]()
+    var approchNumber:Int
     private lazy var  doer:[([Int])->Int] = [
         maxSubArray_greedy,
         maxSubArray_DevideAndConquer,
     ]
-    var approchNumber:Int
     var maxSubArray: ([Int])->Int {
         let n = approchNumber// < doer.count ? approchNumber : 0
         return doer[n]
