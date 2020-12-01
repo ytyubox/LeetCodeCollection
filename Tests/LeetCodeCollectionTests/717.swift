@@ -24,6 +24,7 @@ class MyLinkedList {
     }
     private func getNode(_ index: Int) -> SinglyListNode? {
         var cur = head
+        if index < 0 {return nil}
         var i = 0
         while true {
             guard i < index, cur != nil else {break}
@@ -57,8 +58,13 @@ class MyLinkedList {
     
     /** Add a node of value val before the index-th node in the linked list. If index equals to the length of linked list, the node will be appended to the end of linked list. If index is greater than the length, the node will not be inserted. */
     func addAtIndex(_ index: Int, _ val: Int) {
-        if head == nil {return head = SinglyListNode(val)}
-        insert(head, value: val, at: index)
+        if head == nil {return addAtHead(val)}
+        let prev = getNode(index - 1)
+        if prev == nil {return addAtHead(val)}
+        let cur = SinglyListNode(val)
+        let next = prev?.next
+        cur.next = next
+        prev?.next = cur
     }
     
     /** Delete the index-th node in the linked list, if the index is valid. */
@@ -70,30 +76,9 @@ class MyLinkedList {
         prev.next = next
         
     }
-    private func insert(_ head: SinglyListNode?, value: Int, at index: Int) {
-        if index < 2 {
-            let nextCopy = head?.next
-            head?.next = SinglyListNode(value)
-            head?.next?.next = nextCopy
-            return
-        }
-
-        guard let next = head?.next else {
-            return
-        }
-
-        insert(next, value: value, at: index-1)
-    }
 }
 
 
-func getList(_ head: SinglyListNode?, at index: UInt) -> SinglyListNode? {
-    if index == 0 {
-        return head
-    }
-    
-    return getList(head?.next, at: index - 1)
-}
 
 import XCTest
 class _717Tests: XCTestCase {
@@ -127,6 +112,28 @@ class _717Tests: XCTestCase {
         XCTAssertEqual(sut.get(5), [0, 0, 6, 9, 7, 7, 8][5])
         sut.addAtTail(4)
         XCTAssertEqual(sut.array, [0, 0, 6, 9, 7, 7, 8, 4])
+    }
+    func testCase02() {
+        let sut = makeSUT()
+        sut.addAtHead(1)
+        sut.addAtTail(3)
+        sut.addAtIndex(1,2)
+        XCTAssertEqual(sut.array, [1,2,3])
+        XCTAssertEqual(sut.get(1), 2)
+        sut.deleteAtIndex(0)
+        XCTAssertEqual(sut.array, [2,3])
+        XCTAssertEqual(sut.get(0), 2)
+        
+    }
+    func testCase03() {
+        let sut = MyLinkedList()
+        sut.addAtIndex(0,10)
+        XCTAssertEqual(sut.array, [10])
+        sut.addAtIndex(0,20)
+        XCTAssertEqual(sut.array, [20,10])
+        sut.addAtIndex(1,30)
+        XCTAssertEqual(sut.array, [20, 30, 10])
+        XCTAssertEqual(sut.get(0), 20)
     }
     
     func makeSUT() -> MyLinkedList {
