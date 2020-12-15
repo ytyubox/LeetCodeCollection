@@ -18,10 +18,14 @@ public class ListNode {
     self.val = val
     self.next = nil
   }
+    public init(_ val: Int, next: ()->ListNode?) {
+      self.val = val
+      self.next = next()
+    }
   
 }
 extension ListNode {
-  static func make(array: [Int]) -> ListNode {
+  public static func make(array: [Int]) -> ListNode {
     if array.isEmpty {fatalError()}
     var list = array
     let returnNode = ListNode(list.removeFirst())
@@ -32,6 +36,9 @@ extension ListNode {
     }
     return returnNode
   }
+}
+public extension ListNode {
+    var id: ObjectIdentifier {.init(self)}
 }
 
 class AddTwoNumbersSolution: Run {

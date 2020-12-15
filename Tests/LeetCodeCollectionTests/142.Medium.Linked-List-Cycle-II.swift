@@ -7,17 +7,9 @@
 // Running on macOS 10.15
 
 
-import Foundation
-var _id = 0
-private class ListNode {
-    public var val: Int
-    public var next: ListNode?
-    public init(_ val: Int) {
-        self.val = val
-        _id += 1
-        self.next = nil
-    }
-}
+import LeetCodeCollection
+
+
 extension ListNode {
     var id:ObjectIdentifier {ObjectIdentifier(self)}
 }
