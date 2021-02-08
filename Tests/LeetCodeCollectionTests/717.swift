@@ -12,7 +12,7 @@ class SinglyListNode {
     init(_ val: Int) { self.val = val}
 }
 
-class MyLinkedList {
+private class MyLinkedList {
     typealias Node = SinglyListNode
     var head: Node?
     /** Initialize your data structure here. */
@@ -138,7 +138,7 @@ class _717Tests: XCTestCase {
         XCTAssertEqual(sut.get(0), 20)
     }
     
-    func makeSUT() -> MyLinkedList {
+    private func makeSUT() -> MyLinkedList {
         MyLinkedList()
     }
 }
