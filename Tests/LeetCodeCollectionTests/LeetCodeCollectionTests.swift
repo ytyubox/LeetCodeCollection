@@ -14,3 +14,9 @@ final class LeetCodeCollectionTests: XCTestCase {
         ("testExample", testExample),
     ]
 }
+
+extension Equatable {
+    func assert(_ expect: Self, file: StaticString = #filePath, line: UInt = #line) {
+        XCTAssertEqual(expect, self, file: file, line: line)
+    }
+}
