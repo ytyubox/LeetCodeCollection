@@ -64,23 +64,23 @@ import XCTest
 
 final class _34Tests: XCTestCase {
     func test1() {
-        Solution().searchRange([5, 7, 7, 8, 8, 10], 8).assert([3, 4])
+        Solution().searchRange([5, 7, 7, 8, 8, 10], 8).shouldBe([3, 4])
     }
 
     func test2() {
-        Solution().searchRange([5, 7, 7, 8, 8, 10], 6).assert([-1, -1])
+        Solution().searchRange([5, 7, 7, 8, 8, 10], 6).shouldBe([-1, -1])
     }
 
     func test3() {
-        Solution().searchRange([], 0).assert([-1, -1])
+        Solution().searchRange([], 0).shouldBe([-1, -1])
     }
 
     func test4() {
-        Solution().searchRange([1], 0).assert([-1, -1])
+        Solution().searchRange([1], 0).shouldBe([-1, -1])
     }
 
     func test5() {
-        Solution().searchRange([1], 1).assert([0, 0])
+        Solution().searchRange([1], 1).shouldBe([0, 0])
     }
 }
 
