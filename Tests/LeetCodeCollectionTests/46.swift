@@ -9,7 +9,7 @@
 
 import Foundation
 
-// MARK: - Solution
+// MARK: - ContainSolution
 
 private class ContainSolution {
     func permute(_ nums: [Int]) -> [[Int]] {
@@ -20,9 +20,9 @@ private class ContainSolution {
             if t.count == l {
                 return [t]
             }
-            var r:[[Int]] = []
+            var r: [[Int]] = []
             for i in nums {
-                if t.contains(i) {continue}
+                if t.contains(i) { continue }
                 var t = t
                 t.append(i)
                 let x = helper(t: t)
@@ -37,14 +37,43 @@ private class ContainSolution {
         return result
     }
 }
-class RemoveSolution {
 
-    
+// MARK: - VisitSolution
+
+private class VisitSolution {
+    func permute(_ nums: [Int]) -> [[Int]] {
+        var result: [[Int]] = []
+        let l = nums.count
+        func helper(t: [Int], _ history: [Bool]) {
+            print(t)
+            if t.count == l {
+                result.append(t)
+                return
+            }
+            for (i, num) in nums.enumerated() {
+                if history[i] { continue }
+                var history = history
+                history[i] = true
+                var t = t
+                t.append(num)
+                helper(t: t, history)
+            }
+        }
+        let history = Array(repeating: false, count: l)
+        helper(t: [], history)
+        return result
+    }
+}
+
+// MARK: - RemoveSolution
+
+class RemoveSolution {
     func permute(_ nums: [Int]) -> [[Int]] {
         var result: [[Int]] = []
         var set: [Int] = []
-        
+
         func permutation(_ nums: [Int]) {
+            print(set)
             if nums.isEmpty {
                 result.append(set)
                 return
@@ -57,12 +86,10 @@ class RemoveSolution {
                 set.removeLast()
             }
         }
-        
-        
+
         permutation(nums)
         return result
     }
-    
 }
 
 import XCTest
@@ -76,22 +103,35 @@ final class _46Tests: XCTestCase {
         let result = ContainSolution().permute(Input)
         XCTAssertEqual(result, Output)
     }
+
     func test2() {
         let Input: [Int] = [1, 2]
         let result = ContainSolution().permute(Input)
-        XCTAssertEqual(result, [[1,2], [2,1]])
+        XCTAssertEqual(result, [[1, 2], [2, 1]])
     }
+
     func testMaxContains() {
-        let input = (1...t).map{$0}
+        let input = (1...t).map { $0 }
         let start = CFAbsoluteTimeGetCurrent()
         let result = ContainSolution().permute(input)
         let end = CFAbsoluteTimeGetCurrent()
         time(end - start)
         XCTAssertEqual(result.count, 6)
     }
-    let t = 3
+
+    let t = 9
+
+    func testMaxVisit() {
+        let input = (1...t).map { $0 }
+        let start = CFAbsoluteTimeGetCurrent()
+        let result = VisitSolution().permute(input)
+        let end = CFAbsoluteTimeGetCurrent()
+        time(end - start)
+        XCTAssertEqual(result.count, 6)
+    }
+
     func testMaxRemove() {
-        let input = (1...t).map{$0}
+        let input = (1...t).map { $0 }
         let start = CFAbsoluteTimeGetCurrent()
         let result = RemoveSolution().permute(input)
         let end = CFAbsoluteTimeGetCurrent()
@@ -101,5 +141,5 @@ final class _46Tests: XCTestCase {
 }
 
 func time(_ time: Double, file: StaticString = #filePath, line: UInt = #line) {
-//    XCTFail(time.description, file: file, line: line)
+    XCTFail(time.description, file: file, line: line)
 }
