@@ -119,7 +119,7 @@ final class _46Tests: XCTestCase {
         XCTAssertEqual(result.count, 6)
     }
 
-    let t = 9
+    let t = 3
 
     func testMaxVisit() {
         let input = (1...t).map { $0 }
@@ -141,5 +141,5 @@ final class _46Tests: XCTestCase {
 }
 
 func time(_ time: Double, file: StaticString = #filePath, line: UInt = #line) {
-    XCTFail(time.description, file: file, line: line)
+//    XCTFail(time.description, file: file, line: line)
 }
