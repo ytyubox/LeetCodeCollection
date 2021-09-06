@@ -11,33 +11,30 @@
 import Foundation
 private class Solution {
     func smallestDistancePair(_ nums: [Int], _ k: Int) -> Int {
-        let sortedNums = nums.sorted()
-        var low = 0
-        var high = sortedNums[sortedNums.count - 1] - sortedNums[0]
+        let nums = nums.sorted()
+        var low:Int = 0, high:Int = nums[nums.count - 1] - nums[0]
+        
+        func possibleRank(for diffToCheck: Int) -> Int {
+            var count = 0, diffWindowPointer = 0
+
+            for stepperPointer in 0..<nums.count {
+                while true {
+                    let diff = nums[stepperPointer] - nums[diffWindowPointer]
+                    guard diff > diffToCheck else {break}
+                   diffWindowPointer += 1
+                }
+                let window = stepperPointer - diffWindowPointer
+                count += window
+            }
+            return count
+        }
         
         while low < high {
-            print(low ,"...", high)
             let pivot = low + (high - low) / 2
-            var count = 0, left = 0
 
-            for right in 0..<sortedNums.count {
-                while true {
-                    let diff = sortedNums[right] - sortedNums[left]
-//                    print("M", pivot,
-//                          "R[\(right)]", sortedNums[right],
-//                          "L[\(left)]", sortedNums[left],
-//                          "diff", diff,  diff > pivot ? "> \(pivot)" : "", terminator: diff > pivot ? "\n" : "")
-                    guard diff > pivot else {break}
-                   left += 1
-                }
-                let add = right - left
-                print("~> count + \(add)")
-                count += right - left
-                print("count", count)
-            }
-            print("---")
+            let indicator = possibleRank(for: pivot)
             
-            switch count {
+            switch indicator {
             case k...:
                 high = pivot
             case ..<k:
@@ -45,11 +42,6 @@ private class Solution {
             default:
                 break
             }
-//            if count >= k {
-//                high = pivot
-//            } else {
-//
-//            }
         }
         
         return low
