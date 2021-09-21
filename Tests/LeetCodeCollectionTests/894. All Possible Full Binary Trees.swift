@@ -59,7 +59,6 @@ class _894Test: XCTestCase {
     func test() {
         let soluction = Solution()
         let result = soluction.allPossibleFBT(7)
-        dump(result)
     }
 }
 

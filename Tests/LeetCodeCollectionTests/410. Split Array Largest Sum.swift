@@ -14,9 +14,7 @@ import Foundation
 private class Solution {
     func _splitArray(_ nums: [Int], _ m: Int) -> Int {
         var result = Int.max
-        print(nums)
         func dfs(_ i: Int, _ j: Int, _ cur: Int, _ maxValue: Int) {
-            print("i", i, "j", j, "cur", cur._2, "maxValue", maxValue._2, "result", result)
             if i == nums.count, j == m {
                 result = min(maxValue, result)
                 return
@@ -37,7 +35,6 @@ private class Solution {
     // DP
     public func splitArray(_ nums: [Int],_ m: Int) -> Int {
         let n = nums.count
-        print(nums)
         var sum: [Int] = Array(repeating: 0, count: n + 1)
         var dp: [[Int]] =  Array(repeating: Array(repeating: .max, count: n+1), count: 2)
         dp[0][0] = .min
@@ -53,14 +50,12 @@ private class Solution {
             for j in 1...n {
                 var k = i - 1
                 kloop:while true {
-                    print(i,j,k)
                     guard k < j else {break kloop}
                     dp[i % 2][j] = min(dp[i % 2][j], max(dp[(i - 1) % 2][k], sum[j] - sum[k]))
                     k += 1
                 }
             }
         }
-        print(dp)
         return dp[m % 2][n]
     }
 }

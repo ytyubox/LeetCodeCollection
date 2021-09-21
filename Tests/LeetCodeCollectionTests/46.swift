@@ -16,7 +16,6 @@ private class ContainSolution {
         var result: [[Int]] = []
         let l = nums.count
         func helper(t: [Int]) -> [[Int]] {
-            print(t)
             if t.count == l {
                 return [t]
             }
@@ -45,7 +44,6 @@ private class VisitSolution {
         var result: [[Int]] = []
         let l = nums.count
         func helper(t: [Int], _ history: [Bool]) {
-            print(t)
             if t.count == l {
                 result.append(t)
                 return
@@ -73,7 +71,6 @@ class RemoveSolution {
         var set: [Int] = []
 
         func permutation(_ nums: [Int]) {
-            print(set)
             if nums.isEmpty {
                 result.append(set)
                 return

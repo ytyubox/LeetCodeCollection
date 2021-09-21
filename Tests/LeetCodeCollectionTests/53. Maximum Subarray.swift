@@ -53,14 +53,6 @@ private class Solution {
                 rcurrSum += nums[i]
                 rightSubSum = Swift.max(rightSubSum, rcurrSum)
             }
-            print(nums[startIndex...endIndex],"\n",
-                  startIndex,
-                  p,
-                  endIndex,"\n",
-                  "l:", leftSubSum.s,
-                  "r:", rightSubSum.s,
-                  "o:", leftSubSum + rightSubSum,
-                  "\n")
             return leftSubSum + rightSubSum
         }
         

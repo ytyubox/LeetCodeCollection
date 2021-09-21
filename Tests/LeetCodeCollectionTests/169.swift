@@ -14,10 +14,8 @@ func majorityElement(_ nums: [Int]) -> Int {
                _ l:Int,
                _ r:Int) -> Int {
         var count = 0
-        print("l~r", l,"...",r)
         for i  in l...r {
             c += 1
-            print(c)
             if (nums[i] == num) { count += 1}
         }
         return count

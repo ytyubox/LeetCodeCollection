@@ -91,7 +91,6 @@ func I_findMedianSortedArrays(_ nums1: [Int], _ nums2: [Int]) -> Double {
         return findMedianSortedArrays(nums2, nums1)
     }
 //    let i_j_total = n + (m - n + 1) / 2
-//    print(i_j_total)
     var (l, u) = (0, m)
     var i = 0
     var j: Int { n - i }
