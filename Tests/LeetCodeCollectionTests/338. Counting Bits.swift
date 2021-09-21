@@ -1,5 +1,21 @@
 import Foundation
-private class Solution {
+private class RecursionSolution {
+    func countBits(_ n: Int) -> [Int] {
+        var r:[Int] = []
+        for i in 0...n {
+            var count = 0
+            func get(n: Int) -> Int {
+                if n == 0 {return count}
+                count += n & 1
+                return get(n: n >> 1)
+            }
+            r.append(get(n: i))
+            
+        }
+       return r
+    }
+}
+private class IteractorSolution {
     func countBits(_ n: Int) -> [Int] {
         var r:[Int] = []
         for i in 0...n {
@@ -23,8 +39,14 @@ import XCTest
 
 final class _338Tests: XCTestCase {
     func test() throws {
-        XCTAssertEqual(Solution().countBits(2), [0,1,1])
-        XCTAssertEqual(Solution().countBits(5), [0,1,1,2,1,2])
+        let solution = IteractorSolution()
+        XCTAssertEqual(solution.countBits(2), [0,1,1])
+        XCTAssertEqual(solution.countBits(5), [0,1,1,2,1,2])
+    }
+    func test_recursion() throws {
+        let solution = RecursionSolution()
+        XCTAssertEqual(solution.countBits(2), [0,1,1])
+        XCTAssertEqual(solution.countBits(5), [0,1,1,2,1,2])
     }
 }
 

@@ -34,32 +34,32 @@ class AddTwoNumbersSolution: Run {
   public func run() {
     let l1 = ListNode.make(array: [2,4,3])
     let l2 = ListNode.make(array: [5,6,4])
-    let result = addTwoNumbers(l1, l2)
+      _ = addTwoNumbers(l1, l2)
     do {
       let l1 = ListNode.make(array: [0])
       let l2 = ListNode.make(array: [0])
-      let result = addTwoNumbers(l1, l2)
+        _ = addTwoNumbers(l1, l2)
     }
     do {
       let s1 = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
       let s2 = [5,6,4]
       let l1 = ListNode.make(array: s1)
       let l2 = ListNode.make(array: s2)
-      let result = addTwoNumbers(l1, l2)
+        _ = addTwoNumbers(l1, l2)
     }
     do {
         let s1 = [5]
         let s2 = [5]
         let l1 = ListNode.make(array: s1)
         let l2 = ListNode.make(array: s2)
-        let result = addTwoNumbers(l1, l2)
+        _ = addTwoNumbers(l1, l2)
       }
     do {
          let s1 = [1]
          let s2 = [9,9]
          let l1 = ListNode.make(array: s1)
          let l2 = ListNode.make(array: s2)
-         let result = addTwoNumbers(l1, l2)
+        _ = addTwoNumbers(l1, l2)
        }
   }
 }
