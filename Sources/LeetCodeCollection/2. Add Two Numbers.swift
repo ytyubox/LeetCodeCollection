@@ -35,12 +35,10 @@ class AddTwoNumbersSolution: Run {
     let l1 = ListNode.make(array: [2,4,3])
     let l2 = ListNode.make(array: [5,6,4])
     let result = addTwoNumbers(l1, l2)
-    dump( result)
     do {
       let l1 = ListNode.make(array: [0])
       let l2 = ListNode.make(array: [0])
       let result = addTwoNumbers(l1, l2)
-      dump( result)
     }
     do {
       let s1 = [1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1]
@@ -48,7 +46,6 @@ class AddTwoNumbersSolution: Run {
       let l1 = ListNode.make(array: s1)
       let l2 = ListNode.make(array: s2)
       let result = addTwoNumbers(l1, l2)
-      dump( result)
     }
     do {
         let s1 = [5]
@@ -56,7 +53,6 @@ class AddTwoNumbersSolution: Run {
         let l1 = ListNode.make(array: s1)
         let l2 = ListNode.make(array: s2)
         let result = addTwoNumbers(l1, l2)
-        dump( result)
       }
     do {
          let s1 = [1]
@@ -64,7 +60,6 @@ class AddTwoNumbersSolution: Run {
          let l1 = ListNode.make(array: s1)
          let l2 = ListNode.make(array: s2)
          let result = addTwoNumbers(l1, l2)
-         dump( result)
        }
   }
 }

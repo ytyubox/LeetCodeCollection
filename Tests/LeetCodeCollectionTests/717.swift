@@ -318,7 +318,6 @@ class _717Version2: XCTestCase {
         sut.get(13)
         )
         sut.addAtIndex(33,17)
-        dump(sut.array)
         XCTAssertEqual(42,
                        sut.get(51)
                        )
