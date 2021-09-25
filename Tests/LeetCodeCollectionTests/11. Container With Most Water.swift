@@ -7,6 +7,7 @@ private class Solution {
     /// h === min(Ai, Aj)
     ///  whatever pair of i, j, tallest one is more possible to have greater value
     ///  so that will move the shorter one to the center
+    /// 當需要縮減的時候，比較高的那邊比較有可能達到較大的面積，因此縮減另一面，這樣雖然有些組合不會遍歷到，但是那些組合不可能是最大面積
     ///
     func maxArea(_ height: [Int]) -> Int {
         var m = Int.min
