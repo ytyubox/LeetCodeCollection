@@ -1,4 +1,14 @@
 import Foundation
+import os
+private class MathSolution {
+    func countBits(_ n: Int) -> [Int] {
+        var r = Array(repeating: 0, count: n + 1)
+        for i in 0...n {
+            r[i] = r[i >> 1] + i & 1
+        }
+        return r
+    }
+}
 private class RecursionSolution {
     func countBits(_ n: Int) -> [Int] {
         var r:[Int] = []
@@ -48,5 +58,38 @@ final class _338Tests: XCTestCase {
         XCTAssertEqual(solution.countBits(2), [0,1,1])
         XCTAssertEqual(solution.countBits(5), [0,1,1,2,1,2])
     }
+
+    func test_math() throws {
+        let solution = MathSolution()
+        XCTAssertEqual(solution.countBits(2), [0,1,1])
+        XCTAssertEqual(solution.countBits(5), [0,1,1,2,1,2])
+    }
+    func test_printBinary() {
+        for i in 0...100 {
+            logStatistics(i)
+        }
+    }
 }
 
+
+let statisticsLogger = Logger(subsystem: "", category: "")
+
+// Log statistics about communication with a server.
+func logStatistics(_ i: Int) {
+    let i = i.binaryDescription
+    statisticsLogger.log("\(i, align: .right(columns: 10))")
+}
+
+extension BinaryInteger {
+    var binaryDescription: String {
+        String(self, radix: 2)
+    }
+}
+
+struct Print:ExpressibleByStringInterpolation {
+    typealias StringLiteralType = String
+    init(stringLiteral value: String) {
+        
+    }
+    
+}

@@ -34,7 +34,7 @@ private class Solution {
 
 // MARK: - ATests
 
-final class ATests: XCTestCase {
+final class _10994Tests: XCTestCase {
     func test() {
         let s = Solution().simpleAddition
         s(1, 10).shouldBe(46)
