@@ -27,33 +27,48 @@ private class Solution {
                 dfs(i + 1, j + 1, nums[i], max(maxValue, nums[i]))
             }
         }
-
+        
         dfs(0, 0, 0, 0)
-
+        
         return result
     }
     // DP
     public func splitArray(_ nums: [Int],_ m: Int) -> Int {
         let n = nums.count
-        var sum: [Int] = Array(repeating: 0, count: n + 1)
+        
+        /**
+         ```
+             dp [n+1:2]
+         [
+            min, max, max, ....
+            min, max, max, ....
+         ]
+         sum [n+1:2]
+         [
+            0, Σ0, Σ1, Σ2, ... , Σn]
+         ```
+         */
         var dp: [[Int]] =  Array(repeating: Array(repeating: .max, count: n+1), count: 2)
-        dp[0][0] = .min
-        dp[1][0] = .min
+        var sum: [Int] = Array(repeating: -1, count: n + 1)
+        dp[0][0] = -1
+        dp[1][0] = -1
         
         for i in 0..<n {
             sum[i + 1] = nums[i] + sum[i]
-//            dp[0][i + 1] = .max
-//            dp[1][i + 1] = .max
         }
         
         for i in 1...m {
             for j in 1...n {
                 var k = i - 1
-                kloop:while true {
-                    guard k < j else {break kloop}
-                    dp[i % 2][j] = min(dp[i % 2][j], max(dp[(i - 1) % 2][k], sum[j] - sum[k]))
-                    k += 1
-                }
+            whileLoop:while true {
+                guard k < j else {break whileLoop}
+                print(dp.d2)
+                print("")
+                dp[i&1][j] = min(dp[i & 1][j],
+                                   max(dp[(i - 1) & 1][k],
+                                       sum[j] - sum[k]))
+                k += 1
+            }
             }
         }
         return dp[m % 2][n]
@@ -66,19 +81,25 @@ import XCTest
 
 final class _410Tests: XCTestCase {
     func test1() throws {
-        let nums = [7, 2, 5, 10, 8]
-
-        XCTAssertEqual(Solution().splitArray(nums, 2), 18)
+        let nums = [7, 2, 5, 9, 8]
+        
+        XCTAssertEqual(Solution().splitArray(nums, 2), 17)
     }
-
+    
     func test2() throws {
         let nums = [1, 2, 3, 4, 5]
-
+        
         XCTAssertEqual(Solution().splitArray(nums, 2), 9)
     }
-
+    
     func test3() throws {
         let nums = [1, 4, 4]
         XCTAssertEqual(Solution().splitArray(nums, 3), 4)
+    }
+}
+
+extension Array where Element == [Int] {
+    var d2:String {
+        self.map(\.description).joined(separator: "\n")
     }
 }
