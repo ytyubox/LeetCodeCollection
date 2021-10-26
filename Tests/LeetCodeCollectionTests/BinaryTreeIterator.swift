@@ -102,6 +102,33 @@ public struct PostOrderTreeNodeSequence: Sequence {
         public typealias Element = TreeNode
     }
 }
+struct LevelOrderTreeNodeSequence:Sequence {
+    let node: TreeNode?
+    typealias Iterator = LevelOrderIterator
+    func makeIterator() -> LevelOrderIterator {
+        LevelOrderIterator(node)
+    }
+    struct LevelOrderIterator: IteratorProtocol {
+        internal init(_ root: TreeNode?) {
+            self.root = root
+            self.queue = Queue()
+            root.map {
+                queue.enqueue($0)
+            }
+        }
+        typealias Element = TreeNode
+        
+        let root: TreeNode?
+        private(set) var queue = Queue<Element>()
+        mutating func next() -> TreeNode? {
+            let node = queue.dequeue()
+            node?.left.map{queue.enqueue($0)}
+            node?.right.map{queue.enqueue($0)}
+            return node
+        }
+    }
+}
+
 extension TreeNode {
     func makePreOrderSequence() -> Self {
         self
@@ -111,6 +138,9 @@ extension TreeNode {
     }
     func makePostOrderSequence() -> PostOrderTreeNodeSequence{
         PostOrderTreeNodeSequence(node: self)
+    }
+    func makeLevelOrderSequence() -> LevelOrderTreeNodeSequence {
+        LevelOrderTreeNodeSequence(node: self)
     }
 }
 
@@ -130,7 +160,7 @@ final class BinaryTreeIteratorTests: XCTestCase {
         for node in root.makePreOrderSequence() {
             capture.append(node.val)
         }
-        XCTAssertEqual(capture, [2,1,3,0,5,4,6])
+        XCTAssertEqual(capture, [0,1,2,3,4,5,6])
     }
     func testInOrderSequence() throws {
         let root = makeTree()
@@ -150,6 +180,14 @@ final class BinaryTreeIteratorTests: XCTestCase {
         XCTAssertEqual(capture, [2, 3, 1, 5, 6, 4, 0])
     }
     
+    func testLevelOrderSequence() throws {
+        let root = makeTree()
+        var capture:[Int] = []
+        for node in root.makeLevelOrderSequence() {
+            capture.append(node.val)
+        }
+        XCTAssertEqual(capture, [0,1,4,2,3,5,6])
+    }
     // MARK: - Helper
     private func makeTree() -> TreeNode {
         TreeNode(
