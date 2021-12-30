@@ -10,9 +10,11 @@ final class _297_SerializeAndDeserializeBinaryTree_Hard_Tests: XCTestCase {
                     TreeNode(2),
                     TreeNode(
                         3,
-                        TreeNode(4),
+                        TreeNode(4,
+                                 TreeNode(6),
+                                 TreeNode(7)),
                         TreeNode(5)))),
-            "[1,2,3,null,null,4,5]")
+            "[1,2,3,null,null,4,5,null,null,null,null,6,7,null,null]")
         XCTAssertEqual(
             Codec().serialize(nil),
             "[]")

@@ -38,6 +38,14 @@ public struct Queue<T> {
   }
 }
 
+import XCTest
+
+final class QueueTests: XCTestCase {
+    func test() throws {
+    }
+}
+
+
 extension Array {
     subscript(guarded idx: Int) -> Element? {
         guard (startIndex..<endIndex).contains(idx) else {
