@@ -136,16 +136,35 @@ final class PriorityQueueTests: XCTestCase {
         XCTAssertEqual(array, [1, 0, 2, 3])
     }
     func testPQueue() throws {
-        var sut = PriorityQueue<Int>(>)
-        XCTAssertEqual(sut.dequeue(), nil)
-        sut.add(1)
-        XCTAssertEqual(sut.dequeue(), 1)
-        sut.add(3)
+        var sut = PriorityQueue<Int>{ a,b in
+            return a>b
+        }
+//        XCTAssertEqual(sut.dequeue(), nil)
         sut.add(2)
+//        XCTAssertEqual(sut.dequeue(), 1)
+        sut.add(3)
         sut.add(4)
+        sut.add(1)
         sut.add(10)
         XCTAssertEqual(sut.dequeue(), 10)
-        XCTAssertEqual(sut.description, "[4, 2, 3]")
+        XCTAssertEqual(sut.dequeue(), 4)
+        XCTAssertEqual(sut.dequeue(), 3)
+//        XCTAssertEqual(sut.description, "[4, 2, 3]")
+    }
+    func testPQueue2() throws {
+        var sut = PriorityQueue<Int>{ a,b in
+            return a<b
+        }
+//        XCTAssertEqual(sut.dequeue(), nil)
+        sut.add(2)
+//        XCTAssertEqual(sut.dequeue(), 1)
+        sut.add(3)
+        sut.add(4)
+        sut.add(1)
+        sut.add(10)
+        XCTAssertEqual(sut.dequeue(), 1)
+        XCTAssertEqual(sut.dequeue(), 2)
+        XCTAssertEqual(sut.dequeue(), 3)
+//        XCTAssertEqual(sut.description, "[4, 2, 3]")
     }
 }
-

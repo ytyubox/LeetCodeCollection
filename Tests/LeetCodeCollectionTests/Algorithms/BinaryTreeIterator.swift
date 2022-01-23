@@ -11,6 +11,20 @@ public class TreeNode {
         self.right = right
     }
 }
+extension TreeNode: Equatable {
+    public static func == (lhs: TreeNode, rhs: TreeNode) -> Bool {
+        lhs.val == rhs.val &&
+        lhs.left == rhs.left &&
+        lhs.right == rhs.right
+    }
+}
+extension TreeNode: CustomStringConvertible {
+    public var description: String {
+        
+        return Codec().serialize(self)
+    }
+}
+
 extension TreeNode: Sequence {
     public func makeIterator() -> PreOrderBinaryTreeIterator {
         PreOrderBinaryTreeIterator(node: self)
