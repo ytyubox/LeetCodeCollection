@@ -1,4 +1,12 @@
 public struct Queue<T> {
+    public init(_ list: [T] = []) {
+        self.array = []
+        self.head = 0
+        list.forEach {
+            enqueue($0)
+        }
+    }
+    
   fileprivate var array = [T?]()
   fileprivate var head = 0
 

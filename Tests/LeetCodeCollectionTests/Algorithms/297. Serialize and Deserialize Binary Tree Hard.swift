@@ -49,7 +49,66 @@ final class _297_SerializeAndDeserializeBinaryTree_Hard_Tests: XCTestCase {
                                  TreeNode(7)),
                         TreeNode(5))))
     }
+    func testCodecBFS() throws {
+        typealias SUT = CodecBFS
+        XCTAssertEqual(
+            SUT().serialize(nil),
+            "")
+        XCTAssertEqual(SUT().deserialize(""), nil)
+        XCTAssertEqual(
+            SUT().serialize(
+                TreeNode(
+                    1,
+                    TreeNode(2),
+                    TreeNode(
+                        3,
+                        TreeNode(4,
+                                 TreeNode(6),
+                                 TreeNode(7)),
+                        TreeNode(5)))),
+            "1,2,3,#,#,4,5,6,7,#,#,#,#,#,#")
+        XCTAssertEqual(
+            SUT().deserialize("1,2,3,#,#,4,5,6,7"),
+                TreeNode(
+                    1,
+                    TreeNode(2),
+                    TreeNode(
+                        3,
+                        TreeNode(4,
+                                 TreeNode(6),
+                                 TreeNode(7)),
+                        TreeNode(5))))
+    }
+    func testCodecLeetCode() throws {
+        typealias SUT = CodecLeetcode
+        XCTAssertEqual(SUT().serialize(nil), "[]")
+        XCTAssertEqual(SUT().deserialize("[]"), nil)
+        XCTAssertEqual(
+            SUT().serialize(
+                TreeNode(
+                    1,
+                    TreeNode(2),
+                    TreeNode(
+                        3,
+                        TreeNode(4,
+                                 TreeNode(6),
+                                 TreeNode(7)),
+                        TreeNode(5)))),
+            "[1,2,3,#,#,4,5,6,7]")
+        XCTAssertEqual(
+            SUT().deserialize("[1,2,3,#,#,4,5,6,7]"),
+                TreeNode(
+                    1,
+                    TreeNode(2),
+                    TreeNode(
+                        3,
+                        TreeNode(4,
+                                 TreeNode(6),
+                                 TreeNode(7)),
+                        TreeNode(5))))
+    }
 }
+
 /// DBS
 class Codec {
     func serialize(_ root: TreeNode?) -> String {
@@ -91,15 +150,101 @@ class Codec {
         return helper()
     }
 }
-
-class CodecBFS {
+class CodecLeetcode {
     func serialize(_ root: TreeNode?) -> String {
        
-        ""
+        guard let root = root else {
+            return "[]"
+        }
+
+        var queue = Queue<TreeNode?>([root])
+        var r:[String] = []
+        while true {
+            if queue.isEmpty {break}
+            if let node = queue.dequeue()! {
+                queue.enqueue(node.left)
+                queue.enqueue(node.right)
+                r.append(node.val.description)
+            } else {
+                r.append("#")
+            }
+            
+        }
+        
+        return "[" + r.trim(where: {$0 != "#"}).joined(separator: ",") + "]"
     }
     
     func deserialize(_ data: String) -> TreeNode? {
-        nil
+        
+        let data = data.trimmingCharacters(in: .init(charactersIn: "[]"))
+        
+        if data.isEmpty {return nil}
+        let nodes = data.split(separator: ",")
+        let root = TreeNode(Int(nodes[0])!)
+        var queue = Queue([root])
+        var index = 1
+        while true {
+            guard let node = queue.dequeue(), nodes.indices.contains(index) else {break}
+            if nodes[index] != "#" {
+                let left = TreeNode(Int(nodes[index])!)
+                queue.enqueue(left)
+                node.left = left
+            }
+            index += 1
+            if nodes[index] != "#" {
+                let right = TreeNode(Int(nodes[index])!)
+                queue.enqueue(right)
+                node.right = right
+            }
+            index += 1
+        }
+        return root
+    }
+}
+class CodecBFS {
+    func serialize(_ root: TreeNode?) -> String {
+        guard let root = root else {
+            return ""
+        }
+
+        var queue = Queue<TreeNode?>([root])
+        var r:[String] = []
+        while true {
+            if queue.isEmpty {break}
+            if let node = queue.dequeue()! {
+                queue.enqueue(node.left)
+                queue.enqueue(node.right)
+                r.append(node.val.description)
+            } else {
+                r.append("#")
+            }
+            
+        }
+        return r.joined(separator: ",")
+    }
+    
+    func deserialize(_ data: String) -> TreeNode? {
+        if data.isEmpty {return nil}
+        let nodes = data.split(separator: ",")
+        let root = TreeNode(Int(nodes[0])!)
+        var queue = Queue([root])
+        var index = 1
+        while true {
+            guard let node = queue.dequeue(), nodes.indices.contains(index) else {break}
+            if nodes[index] != "#" {
+                let left = TreeNode(Int(nodes[index])!)
+                queue.enqueue(left)
+                node.left = left
+            }
+            index += 1
+            if nodes[index] != "#" {
+                let right = TreeNode(Int(nodes[index])!)
+                queue.enqueue(right)
+                node.right = right
+            }
+            index += 1
+        }
+        return root
     }
 }
 /**
@@ -167,4 +312,38 @@ struct Level {
         nodes.removeAll(keepingCapacity: true)
     }
     
+}
+
+import XCTest
+
+final class ArrayTrimTests: XCTestCase {
+    func test() throws {
+        XCTAssertEqual([5,4,3,4,5].trim(where: { $0 < 4}),
+                       [3])
+        XCTAssertEqual([5,4,4,5].trim(where: { $0 < 4}),
+                       [])
+        XCTAssertEqual([5].trim(where: { $0 < 4}), [])
+        XCTAssertEqual([].trim(where: { $0 < 4}), [])
+        
+    }
+}
+
+extension Array {
+    func trim(where comparer: (Element) -> Bool) -> SubSequence {
+        var up = 0
+        var low = 0
+        for i in indices {
+            if comparer(self[i]) {
+                low = i
+                break
+            }
+        }
+        for i in indices.reversed() {
+            if comparer(self[i]) {
+                up = i + 1
+                break
+            }
+        }
+        return self[low..<up]
+    }
 }
