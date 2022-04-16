@@ -19,7 +19,7 @@ final class _297_SerializeAndDeserializeBinaryTree_Hard_Tests: XCTestCase {
             Codec2Level().serialize(nil),
             "[]")
     }
-    func testCodecInorder() throws {
+    func testCodecpreorder() throws {
         
         XCTAssertEqual(
             Codec().serialize(nil),
@@ -37,6 +37,32 @@ final class _297_SerializeAndDeserializeBinaryTree_Hard_Tests: XCTestCase {
                                  TreeNode(7)),
                         TreeNode(5)))),
             "1,2,##3,4,6,##7,##5,##")
+        XCTAssertEqual(
+            Codec().serialize(
+                TreeNode(
+                    1,
+                    TreeNode(2),
+                    TreeNode(3))),
+            "1,2,##3,##")
+        XCTAssertEqual(
+            Codec().serialize(
+                TreeNode(
+                    10,
+                    TreeNode(2,
+                             TreeNode(4,
+                                     TreeNode(5))),
+                    TreeNode(3))),
+            "10,2,4,5,####3,##")
+        XCTAssertEqual(
+            Codec().deserialize(
+                "1,2,4,5,####3,##"),
+            TreeNode(
+                1,
+                TreeNode(2,
+                         TreeNode(4,
+                                 TreeNode(5))),
+                TreeNode(3))
+            )
         XCTAssertEqual(
             Codec().deserialize("1,2,##3,4,6,##7,##5,##"),
                 TreeNode(
@@ -94,9 +120,9 @@ final class _297_SerializeAndDeserializeBinaryTree_Hard_Tests: XCTestCase {
                                  TreeNode(6),
                                  TreeNode(7)),
                         TreeNode(5)))),
-            "[1,2,3,#,#,4,5,6,7]")
+            "[1,2,3,null,null,4,5,6,7]")
         XCTAssertEqual(
-            SUT().deserialize("[1,2,3,#,#,4,5,6,7]"),
+            SUT().deserialize("[1,2,3,null,null,4,5,6,7]"),
                 TreeNode(
                     1,
                     TreeNode(2),
@@ -106,10 +132,29 @@ final class _297_SerializeAndDeserializeBinaryTree_Hard_Tests: XCTestCase {
                                  TreeNode(6),
                                  TreeNode(7)),
                         TreeNode(5))))
+        XCTAssertEqual(CodecLeetcode().serialize(
+            TreeNode(1, TreeNode(2), TreeNode(3))
+        ), ("[1,2,3]"))
+        XCTAssertEqual(CodecLeetcode().serialize(
+            TreeNode(1,
+                     nil,
+                     TreeNode(2,
+                             TreeNode(3))
+                    )
+        ), ("[1,null,2,3]"))
+        XCTAssertEqual(CodecLeetcode().serialize(
+            TreeNode(5,
+                TreeNode(4, TreeNode(3,
+                                    TreeNode(-1))),
+                     TreeNode(7, TreeNode(2, TreeNode(9)))
+                    )
+        ), ("[5,4,7,3,null,2,null,-1,null,9]"))
+
+
     }
 }
 
-/// DBS
+/// BFS
 class Codec {
     func serialize(_ root: TreeNode?) -> String {
        
@@ -117,7 +162,7 @@ class Codec {
         
         func helper(_ node: TreeNode?) {
             guard let node = node else {
-                r.append("#")
+                 r.append("#") // more than Pre order
                 return
             }
             r.append(node.val.description+",")
@@ -166,12 +211,12 @@ class CodecLeetcode {
                 queue.enqueue(node.right)
                 r.append(node.val.description)
             } else {
-                r.append("#")
+                r.append("null")
             }
             
         }
         
-        return "[" + r.trim(where: {$0 != "#"}).joined(separator: ",") + "]"
+        return "[" + r.trim(where: {$0 != "null"}).joined(separator: ",") + "]"
     }
     
     func deserialize(_ data: String) -> TreeNode? {
@@ -185,13 +230,13 @@ class CodecLeetcode {
         var index = 1
         while true {
             guard let node = queue.dequeue(), nodes.indices.contains(index) else {break}
-            if nodes[index] != "#" {
+            if nodes[index] != "null" {
                 let left = TreeNode(Int(nodes[index])!)
                 queue.enqueue(left)
                 node.left = left
             }
             index += 1
-            if nodes[index] != "#" {
+            if nodes[index] != "null" {
                 let right = TreeNode(Int(nodes[index])!)
                 queue.enqueue(right)
                 node.right = right
@@ -226,10 +271,11 @@ class CodecBFS {
     func deserialize(_ data: String) -> TreeNode? {
         if data.isEmpty {return nil}
         let nodes = data.split(separator: ",")
-        let root = TreeNode(Int(nodes[0])!)
+        var index = 0
+        let root = TreeNode(Int(nodes[index])!)
         var queue = Queue([root])
-        var index = 1
         while true {
+            index += 1
             guard let node = queue.dequeue(), nodes.indices.contains(index) else {break}
             if nodes[index] != "#" {
                 let left = TreeNode(Int(nodes[index])!)
@@ -242,7 +288,6 @@ class CodecBFS {
                 queue.enqueue(right)
                 node.right = right
             }
-            index += 1
         }
         return root
     }
